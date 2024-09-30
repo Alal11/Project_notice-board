@@ -1,0 +1,24 @@
+# 어플리케이션 포트 -> 디폴트가 8080
+server:
+  port: 8080
+
+# database 연동 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board?serverTime=Asia/Seoul&characterEncoding=UTF-8
+    username: alal11
+    password: 0000
+
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
