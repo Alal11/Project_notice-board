@@ -5,10 +5,10 @@ server:
 # database 연동 설정
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/board?serverTime=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/board_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: alal11
-    password: 0000
+    password: finish00!
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   # spring data jpa 설정
   jpa:
@@ -17,8 +17,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
-# mybatis
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  config-location: classpath:mybatis-config.xml
