@@ -15,7 +15,7 @@ public class UserDTO {
     private String userPwCheck;
     private String userEmail;
 
-    public static UserDTO toUserDTO(UserEntity userEntity){
+    public static UserDTO toUserDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
         userDTO.setUserName(userEntity.getUserName());

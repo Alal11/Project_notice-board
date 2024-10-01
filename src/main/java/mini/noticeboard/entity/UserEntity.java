@@ -23,8 +23,17 @@ public class UserEntity {
     @Column(unique = true)  // unique 제약조건 추가
     private String userEmail;
 
-    public static UserEntity toUserEntity(UserDTO userDTO){  // dto를 entity로 변환
+    public static UserEntity toUserEntity(UserDTO userDTO) {  // dto를 entity로 변환
         UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(userDTO.getUserName());
+        userEntity.setUserPw(userDTO.getUserPw());
+        userEntity.setUserEmail(userDTO.getUserEmail());
+        return userEntity;
+    }
+
+    public static UserEntity toUpdateUserEntity(UserDTO userDTO) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userDTO.getId());
         userEntity.setUserName(userDTO.getUserName());
         userEntity.setUserPw(userDTO.getUserPw());
         userEntity.setUserEmail(userDTO.getUserEmail());
