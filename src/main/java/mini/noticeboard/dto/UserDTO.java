@@ -1,13 +1,12 @@
 package mini.noticeboard.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import mini.noticeboard.entity.UserEntity;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class UserDTO {
     private Long id;
@@ -15,4 +14,13 @@ public class UserDTO {
     private String userPw;
     private String userPwCheck;
     private String userEmail;
+
+    public static UserDTO toUserDTO(UserEntity userEntity){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userEntity.getId());
+        userDTO.setUserName(userEntity.getUserName());
+        userDTO.setUserPw(userEntity.getUserPw());
+        userDTO.setUserEmail(userEntity.getUserEmail());
+        return userDTO;
+    }
 }

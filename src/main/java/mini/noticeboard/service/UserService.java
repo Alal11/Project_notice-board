@@ -6,6 +6,8 @@ import mini.noticeboard.entity.UserEntity;
 import mini.noticeboard.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -16,5 +18,27 @@ public class UserService {
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
         userRepository.save(userEntity);
 
+    }
+
+    public UserDTO login(UserDTO userDTO) {
+        // 회원이 입력한 아이디로 DB 조회 -> DB의 비번이랑 회원이 입력한 비번이랑 일치하는지 판단
+        Optional<UserEntity> byUserName = userRepository.findByUserName(userDTO.getUserName());
+
+        if(byUserName.isPresent()){
+            // 조회 결과가 있다 (해당 아이디를 가진 회원 정보가 있다)
+            UserEntity userEntity = byUserName.get();
+            if(userEntity.getUserPw().equals(userDTO.getUserPw())){
+                // 비번 일치
+                // entity -> dto 변환 후 반환
+                UserDTO dto = UserDTO.toUserDTO(userEntity);
+                return dto;
+            }else{
+                // 비번 불일치 (로그인 실패)
+                return null;
+            }
+        }else{
+            // 조회 결과가 없다 (해당 아이디를 가진 회원이 없다)
+            return null;
+        }
     }
 }
