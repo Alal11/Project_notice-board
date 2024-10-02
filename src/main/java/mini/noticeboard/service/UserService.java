@@ -56,4 +56,21 @@ public class UserService {
     public void update(UserDTO userDTO) {
         userRepository.save(UserEntity.toUpdateUserEntity(userDTO));
     }
+
+    public boolean deleteUser(Long id, String pw) {
+        Optional<UserEntity> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            UserEntity userEntity = userOptional.get();
+            System.out.println("비밀번호 비교 중: 입력한 비밀번호: " + pw + ", 저장된 비밀번호: " + userEntity.getUserPw());
+            if (userEntity.getUserPw().equals(pw)) {
+                userRepository.deleteById(id);
+                return true;
+            }
+        } else {
+            System.out.println("사용자를 찾을 수 없습니다.");
+        }
+        return false;
+    }
+
+
 }

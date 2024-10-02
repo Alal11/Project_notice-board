@@ -7,10 +7,7 @@ import mini.noticeboard.dto.UserDTO;
 import mini.noticeboard.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,6 +41,7 @@ public class UserController {
         if (signinResult != null) {
             // 로그인 성공
             session.setAttribute("loginName", signinResult.getUserName());
+            session.setAttribute("loginId", signinResult.getId());
             return "main";
         } else {
             // 로그인 실패
@@ -63,6 +61,31 @@ public class UserController {
     public String update(@ModelAttribute UserDTO userDTO) {
         userService.update(userDTO);
         return "main";
+    }
+
+    @GetMapping("/delete")
+    public String showDeleteForm(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("loginId");
+        if (userId == null) {
+            return "redirect:/signin";
+        }
+        model.addAttribute("userId", userId);
+        return "delete";
+    }
+
+    @PostMapping("/delete")
+    public String deleteUser(@RequestParam("id") Long id, @RequestParam("pw") String pw, HttpSession session) {
+        try {
+            boolean isDelete = userService.deleteUser(id, pw);
+            if (isDelete) {
+                session.invalidate();  // 세션 무효화
+                return "redirect:/";
+            } else {
+                return "redirect:/user/delete?error=password";
+            }
+        } catch (Exception e) {
+            return "redirect:/user/delete?error=unknown";
+        }
     }
 
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>delete</title>
+</head>
+<body>
+<h3>회원 탈퇴</h3>
+
+<form action="/user/delete" method="post">
+    <input type="hidden" name="id" th:value="${session.loginId}">
+    비밀번호: <input type="password" id="pw" name="pw" required>
+    <button type="submit">탈퇴하기</button>
+</form>
+
+<div th:if="${param.error == 'password'}">
+    <p style="color: red;">비밀번호가 일치하지 않습니다.</p>
+</div>
+<div th:if="${param.error == 'unknown'}">
+    <p style="color: red;">회원 탈퇴 중 오류가 발생하였습니다.</p>
+</div>
+</body>
+</html>
