@@ -88,5 +88,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/signout")
+    public String signout(HttpSession session) {
+
+        session.invalidate();  // 세션 무효화
+
+        return "redirect:/";
+    }
+
 
 }
