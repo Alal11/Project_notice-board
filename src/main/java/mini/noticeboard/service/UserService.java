@@ -13,13 +13,21 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void save(UserDTO userDTO) {
+    public String save(UserDTO userDTO) {
+
+        // 중복 체크
+        if(userRepository.findByUserName(userDTO.getUserName()).isPresent()){
+            return "userNameDuplicate";
+        }else if(userRepository.findByUserEmail(userDTO.getUserEmail()).isPresent()){
+            return "emailDuplicate";
+        }
+
         // 매개변수로 받은 dto 객체를 repository에 entity 객체로 넘겨줘야 함
         // 1. dto -> entity로 변환  2. repository의 save 메서드 호출
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
         userRepository.save(userEntity);
 
-    }
+        return "success";    }
 
     public UserDTO login(UserDTO userDTO) {
         // 회원이 입력한 아이디로 DB 조회 -> DB의 비번이랑 회원이 입력한 비번이랑 일치하는지 판단

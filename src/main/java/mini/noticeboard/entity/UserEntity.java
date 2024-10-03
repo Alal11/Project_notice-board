@@ -20,7 +20,7 @@ public class UserEntity {
     @Column
     private String userPw;
 
-    @Column(unique = true)  // unique 제약조건 추가
+    @Column
     private String userEmail;
 
     public static UserEntity toUserEntity(UserDTO userDTO) {  // dto를 entity로 변환

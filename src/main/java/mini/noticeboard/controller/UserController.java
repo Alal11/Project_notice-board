@@ -24,9 +24,20 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute UserDTO userDTO) {
+    public String signup(@ModelAttribute UserDTO userDTO, Model model) {
         System.out.println("userDTO = " + userDTO);
-        userService.save(userDTO);  // db 처리가 필요함
+        String result = userService.save(userDTO);// db 처리가 필요함
+
+        if(result.equals("userNameDuplicate")){
+            model.addAttribute("message", "이미 사용 중인 아이디 입니다.");
+            return "signup";
+        }
+
+        if(result.equals("emailDuplicate")){
+            model.addAttribute("message", "이미 사용 중인 이메일 입니다.");
+            return "signup";
+        }
+
         return "signin";
     }
 

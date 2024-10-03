@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>SignUp</title>
+
+    <script th:inline="javascript">
+        window.onload = function () {
+            // 메시지를 JS 변수로 가져오기
+            const message = /*[[${message}]]*/ '';
+
+            // message가 존재할 경우 alert 창에 메시지 띄우기
+            if (message) {
+                alert(message);
+            }
+        };
+    </script>
 </head>
 <body>
 <!-- action 속성: form에 작성한 데이터를 어디로 보낼지 지정 -->
