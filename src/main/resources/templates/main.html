@@ -15,6 +15,16 @@
 
     <p th:text="${session.loginId}">세션 ID가 여기 표시됩니다.</p>
 
+    <br><br>
+
+    <button onclick="saveReq()">글 작성</button>
+
 
 </body>
+
+<script>
+    const saveReq = () =>{
+        location.href = "/board/write";
+    }
+</script>
 </html>
