@@ -4,7 +4,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mini.noticeboard.dto.BoardDTO;
+import mini.noticeboard.dto.CommentDTO;
 import mini.noticeboard.service.BoardService;
+import mini.noticeboard.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     // 게시판 목록 조회
     @GetMapping("/")
@@ -43,6 +46,22 @@ public class BoardController {
         log.info("boardDTO = {}", boardDTO);
         boardService.save(boardDTO);
         return "redirect:/board/";
+    }
+
+
+    // 게시글 상세 보기 화면 호출
+    @GetMapping("/{id}")
+    public String detail(@PathVariable("id") Long id, Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+
+        // 조회수 증가
+        boardService.updateViews(id);
+
+        // 댓글 목록 가져오기
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("board", boardDTO);
+        model.addAttribute("commentDTOList", commentDTOList);
+        return "board/detail";
     }
 
 

@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import mini.noticeboard.dto.BoardDTO;
 import mini.noticeboard.entity.BoardEntity;
 import mini.noticeboard.repository.BoardRepository;
+import mini.noticeboard.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     // 게시판 목록 조회
     public List<BoardDTO> getList(){
@@ -26,6 +29,7 @@ public class BoardService {
                     dto.setBoardTitle(entity.getBoardTitle());
                     dto.setBoardContents(entity.getBoardContents());
                     dto.setBoardViews(entity.getBoardViews());
+                    dto.setCommentCount(commentRepository.countByBoardEntity(entity));
                     dto.setCreateDate(entity.getCreateDate());
                     dto.setModifiedDate(entity.getModifiedDate());
                     return dto;
@@ -37,5 +41,39 @@ public class BoardService {
     public void save(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
         boardRepository.save(boardEntity);
+    }
+
+
+    // 게시글 상세 조회
+    public BoardDTO findById(Long id){
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+        if(optionalBoardEntity.isPresent()){
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            return toBoardDTO(boardEntity);
+        }else{
+            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+        }
+    }
+
+    // 조회수 증가
+    public void updateViews(Long id){
+        BoardEntity boardEntity = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        boardEntity.setBoardViews(boardEntity.getBoardViews() + 1);
+        boardRepository.save(boardEntity);
+    }
+
+    // Entity를 DTO로 변환하는 메소드
+    private BoardDTO toBoardDTO(BoardEntity boardEntity){
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setBoardId(boardEntity.getBoardId());
+        boardDTO.setUserName(boardEntity.getUserName());
+        boardDTO.setBoardTitle(boardEntity.getBoardTitle());
+        boardDTO.setBoardContents(boardEntity.getBoardContents());
+        boardDTO.setBoardViews(boardEntity.getBoardViews());
+        boardDTO.setCommentCount(commentRepository.countByBoardEntity(boardEntity));
+        boardDTO.setCreateDate(boardEntity.getCreateDate());
+        boardDTO.setModifiedDate(boardEntity.getModifiedDate());
+        return boardDTO;
     }
 }

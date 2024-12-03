@@ -11,16 +11,18 @@
         <th>boardId</th>
         <th>userName</th>
         <th>boardTitle</th>
-        <th>boardContents</th>
         <th>boardViews</th>
+        <th>commentCount</th>
         <th>createDate</th>
     </tr>
     <tr th:each = "board: ${boardDTOList}">
         <td th:text = "${board.boardId}"></td>
         <td th:text = "${board.userName}"></td>
-        <td th:text = "${board.boardTitle}"></td>
-        <td th:text = "${board.boardContents}"></td>
+        <td>
+            <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></a>
+        </td>
         <td th:text = "${board.boardViews}"></td>
+        <td th:text = "${board.commentCount}"></td>
         <td th:text = "${board.createDate}"></td>
     </tr>
 </table>
