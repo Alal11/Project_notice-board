@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <th>작성시간</th>
-        <td th:text="${board.createDate}"></td>
+        <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
     </tr>
     <tr>
         <th>조회수</th>
@@ -43,7 +43,7 @@
         <tr th:each="comment: ${commentDTOList}">
             <td th:text="${comment.commentWriter}"></td>
             <td th:text="${comment.commentContents}"></td>
-            <td th:text="${comment.createDate}"></td>
+            <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
     </table>
 </div>
