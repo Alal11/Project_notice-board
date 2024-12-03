@@ -13,8 +13,10 @@ public class BoardEntity extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long boardId;
 
+    @Column
+    private String userName;
 
     @Column
     private String boardTitle;
@@ -27,6 +29,7 @@ public class BoardEntity extends TimeEntity {
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setUserName(boardDTO.getUserName());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardViews(0);

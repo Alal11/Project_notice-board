@@ -4,7 +4,7 @@
 <configuration>
     <typeAliases>
         <!--클래스 alias가 들어갈 공간-->
-
-        <!--indexController 예시-->
+        <typeAlias type="mini.noticeboard.controller.HomeController" alias="HomeController"></typeAlias>
+        <typeAlias type="mini.noticeboard.entity.BoardEntity" alias="board"></typeAlias>
     </typeAliases>
 </configuration>

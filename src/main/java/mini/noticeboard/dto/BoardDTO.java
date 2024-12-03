@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor  // 모든 필드를 매개변수로 하는 생성자
 public class BoardDTO {
 
-    private Long id;
+    private Long boardId;
+    private String userName;
     private String boardTitle;
     private String boardContents;
     private int boardViews;

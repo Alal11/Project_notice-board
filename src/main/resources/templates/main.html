@@ -19,12 +19,19 @@
 
     <button onclick="saveReq()">글 작성</button>
 
+    <button onclick="listReq()">글 목록</button>
+
+
 
 </body>
 
 <script>
     const saveReq = () =>{
-        location.href = "/board/write";
+        location.href = "/board/writeForm";
+    }
+
+    const listReq = () =>{
+        location.href = "/board/";
     }
 </script>
 </html>
