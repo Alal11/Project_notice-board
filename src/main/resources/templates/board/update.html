@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+</head>
+<body>
+<form action="/board/update" method="post">
+    <input type="hidden" name="boardId" th:value="${board.boardId}">
+    <input type="hidden" name="userName" th:value="${board.userName}">
+    제목: <input type="text" name="boardTitle" th:value="${board.boardTitle}"> <br>
+    내용: <textarea name="boardContents" rows="10" cols="30" th:text="${board.boardContents}"></textarea> <br>
+    <input type="submit" value="수정">
+</form>
+<button onclick="location.href='/board/'">목록으로</button>
+</body>
+</html>

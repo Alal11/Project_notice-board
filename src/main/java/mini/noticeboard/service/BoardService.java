@@ -63,6 +63,23 @@ public class BoardService {
         boardRepository.save(boardEntity);
     }
 
+    // 게시글 수정
+    public void update(BoardDTO boardDTO){
+        BoardEntity boardEntity = boardRepository.findById(boardDTO.getBoardId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardRepository.save(boardEntity);
+    }
+
+    // 게시글 삭제
+    public void delete(Long id){
+        boardRepository.deleteById(id);
+    }
+
+
+
     // Entity를 DTO로 변환하는 메소드
     private BoardDTO toBoardDTO(BoardEntity boardEntity){
         BoardDTO boardDTO = new BoardDTO();
