@@ -36,4 +36,16 @@ public class BoardEntity extends TimeEntity {
         return boardEntity;
     }
 
+    public BoardDTO toDTO() {
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setBoardId(this.boardId);
+        boardDTO.setUserName(this.userName);
+        boardDTO.setBoardTitle(this.boardTitle);
+        boardDTO.setBoardContents(this.boardContents);
+        boardDTO.setBoardViews(this.boardViews);
+        boardDTO.setCreateDate(this.getCreateDate());
+        boardDTO.setModifiedDate(this.getModifiedDate());
+        return boardDTO;
+    }
+
 }

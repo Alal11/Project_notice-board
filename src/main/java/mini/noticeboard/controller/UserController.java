@@ -20,7 +20,7 @@ public class UserController {
     // 회원가입 페이지 출력 요청
     @GetMapping("/signup")
     public String signupForm() {
-        return "signup";  // 화면만 띄워줌
+        return "user/signup";  // 화면만 띄워줌
     }
 
     @PostMapping("/signup")
@@ -30,20 +30,20 @@ public class UserController {
 
         if(result.equals("userNameDuplicate")){
             model.addAttribute("message", "이미 사용 중인 아이디 입니다.");
-            return "signup";
+            return "user/signup";
         }
 
         if(result.equals("emailDuplicate")){
             model.addAttribute("message", "이미 사용 중인 이메일 입니다.");
-            return "signup";
+            return "user/signup";
         }
 
-        return "signin";
+        return "user/signin";
     }
 
     @GetMapping("/signin")
     public String signinForm() {
-        return "signin";
+        return "user/signin";
     }
 
     @PostMapping("/signin")
@@ -56,7 +56,7 @@ public class UserController {
             return "main";
         } else {
             // 로그인 실패
-            return "signin";
+            return "user/signin";
         }
     }
 
@@ -65,7 +65,7 @@ public class UserController {
         String myName = (String) session.getAttribute("loginName");
         UserDTO userDTO = userService.updateForm(myName);
         model.addAttribute("updateUser", userDTO);
-        return "update";
+        return "user/update";
     }
 
     @PostMapping("/update")
@@ -81,7 +81,7 @@ public class UserController {
             return "redirect:/signin";
         }
         model.addAttribute("userId", userId);
-        return "delete";
+        return "user/delete";
     }
 
     @PostMapping("/delete")

@@ -25,14 +25,14 @@ public class BoardController {
         // DB에서 전체 게시글 가져와서 list.html에 보여준다.
         List<BoardDTO> boardDTOList = boardService.getList();
         model.addAttribute("boardDTOList", boardDTOList);
-        return "boardList";
+        return "board/boardList";
     }
 
     // 게시판 작성 화면 호출
     @GetMapping("/writeForm")
     public String writeForm() {
-        System.out.println("게시판 작성 화면 컨트롤러");
-        return "writeForm";
+        log.info("게시판 작성 화면 컨트롤러");
+        return "board/writeForm";
     }
 
     // 게시판 작성 (DB 저장)
@@ -40,7 +40,7 @@ public class BoardController {
     public String save(@ModelAttribute BoardDTO boardDTO, HttpSession session) {
         String loginName = (String) session.getAttribute("loginName");
         boardDTO.setUserName(loginName);
-        System.out.println("boardDTO = " + boardDTO);
+        log.info("boardDTO = {}", boardDTO);
         boardService.save(boardDTO);
         return "redirect:/board/";
     }
