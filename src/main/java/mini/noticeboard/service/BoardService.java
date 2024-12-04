@@ -5,6 +5,8 @@ import mini.noticeboard.dto.BoardDTO;
 import mini.noticeboard.entity.BoardEntity;
 import mini.noticeboard.repository.BoardRepository;
 import mini.noticeboard.repository.CommentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,22 +21,20 @@ public class BoardService {
     private final CommentRepository commentRepository;
 
     // 게시판 목록 조회
-    public List<BoardDTO> getList(){
-        List<BoardEntity> boardEntityList = boardRepository.findAllByOrderByBoardIdDesc();
-        return boardEntityList.stream()
-                .map(entity -> {
-                    BoardDTO dto = new BoardDTO();
-                    dto.setBoardId(entity.getBoardId());
-                    dto.setUserName(entity.getUserName());
-                    dto.setBoardTitle(entity.getBoardTitle());
-                    dto.setBoardContents(entity.getBoardContents());
-                    dto.setBoardViews(entity.getBoardViews());
-                    dto.setCommentCount(commentRepository.countByBoardEntity(entity));
-                    dto.setCreateDate(entity.getCreateDate());
-                    dto.setModifiedDate(entity.getModifiedDate());
-                    return dto;
-                })
-                .collect(Collectors.toList());
+    public Page<BoardDTO> getList(Pageable pageable) {
+        Page<BoardEntity> boardEntities = boardRepository.findAllByOrderByBoardIdDesc(pageable);
+        return boardEntities.map(entity -> {
+            BoardDTO dto = new BoardDTO();
+            dto.setBoardId(entity.getBoardId());
+            dto.setUserName(entity.getUserName());
+            dto.setBoardTitle(entity.getBoardTitle());
+            dto.setBoardContents(entity.getBoardContents());
+            dto.setBoardViews(entity.getBoardViews());
+            dto.setCommentCount(commentRepository.countByBoardEntity(entity));
+            dto.setCreateDate(entity.getCreateDate());
+            dto.setModifiedDate(entity.getModifiedDate());
+            return dto;
+        });
     }
 
     // 게시판 작성 (DB 저장)

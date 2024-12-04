@@ -7,6 +7,10 @@ import mini.noticeboard.dto.BoardDTO;
 import mini.noticeboard.dto.CommentDTO;
 import mini.noticeboard.service.BoardService;
 import mini.noticeboard.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +28,16 @@ public class BoardController {
 
     // 게시판 목록 조회
     @GetMapping("/")
-    public String getList(Model model){
+    public String getList(Model model,
+                          @PageableDefault(page = 0, size = 5, sort = "boardId", direction = Sort.Direction.DESC)
+                          Pageable pageable){
         // DB에서 전체 게시글 가져와서 list.html에 보여준다.
-        List<BoardDTO> boardDTOList = boardService.getList();
+        Page<BoardDTO> boardDTOList = boardService.getList(pageable);
         model.addAttribute("boardDTOList", boardDTOList);
+        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("hasNext", boardDTOList.hasNext());
+        model.addAttribute("hasPrev", boardDTOList.hasPrevious());
         return "board/boardList";
     }
 

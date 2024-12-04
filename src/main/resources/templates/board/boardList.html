@@ -26,7 +26,7 @@
         <th>commentCount</th>
         <th>createDate</th>
     </tr>
-    <tr th:each = "board: ${boardDTOList}">
+    <tr th:each = "board: ${boardDTOList.content}">
         <td th:text = "${board.boardId}"></td>
         <td th:text = "${board.userName}"></td>
         <td>
@@ -37,5 +37,15 @@
         <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
     </tr>
 </table>
+
+<div>
+    <span th:if="${hasPrev}">
+        <a th:href="@{/board/(page=${previous})}">다음</a>
+    </span>
+
+    <span th:if="${hasNext}">
+        <a th:href="@{/board/(page=${next})}">이전</a>
+    </span>
+</div>
 </body>
 </html>
