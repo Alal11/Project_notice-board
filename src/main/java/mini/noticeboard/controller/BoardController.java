@@ -86,4 +86,15 @@ public class BoardController {
         return "redirect:/board/";
     }
 
+    // 키워드 검색
+    @GetMapping("/search")
+    public String search(@RequestParam("searchType") String searchType,
+                         @RequestParam("keyword") String keyword, Model model){
+        List<BoardDTO> searchList = boardService.search(searchType, keyword);
+        model.addAttribute("boardDTOList", searchList);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("keyword", keyword);
+        return "board/boardList";
+    }
+
 }

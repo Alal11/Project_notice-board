@@ -20,7 +20,7 @@ public class BoardService {
 
     // 게시판 목록 조회
     public List<BoardDTO> getList(){
-        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<BoardEntity> boardEntityList = boardRepository.findAllByOrderByBoardIdDesc();
         return boardEntityList.stream()
                 .map(entity -> {
                     BoardDTO dto = new BoardDTO();
@@ -76,6 +76,40 @@ public class BoardService {
     // 게시글 삭제
     public void delete(Long id){
         boardRepository.deleteById(id);
+    }
+
+    // 게시글 검색 기능
+    public List<BoardDTO> search(String searchType, String keyword){
+        List<BoardEntity> boardEntityList;
+
+        switch (searchType){
+            case "title":
+                boardEntityList = boardRepository.findByBoardTitleContaining(keyword);
+                break;
+            case "content":
+                boardEntityList = boardRepository.findByBoardContentsContaining(keyword);
+                break;
+            case "titleContent":
+                boardEntityList = boardRepository.findByBoardTitleContainingOrBoardContentsContaining(keyword, keyword);
+                break;
+            default:
+                throw new IllegalArgumentException("잘못된 검색 유형입니다.");
+        }
+
+        return boardEntityList.stream()
+                .map(entity -> {
+                    BoardDTO dto = new BoardDTO();
+                    dto.setBoardId(entity.getBoardId());
+                    dto.setUserName(entity.getUserName());
+                    dto.setBoardTitle(entity.getBoardTitle());
+                    dto.setBoardContents(entity.getBoardContents());
+                    dto.setBoardViews(entity.getBoardViews());
+                    dto.setCommentCount(commentRepository.countByBoardEntity(entity));
+                    dto.setCreateDate(entity.getCreateDate());
+                    dto.setModifiedDate(entity.getModifiedDate());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 
