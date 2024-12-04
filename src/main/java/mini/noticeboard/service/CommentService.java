@@ -47,4 +47,16 @@ public class CommentService {
             return dto;
         });
     }
+
+    // 댓글이 속한 게시글의 id 가져오기
+    public Long getBoardId(Long commentId){
+        CommentEntity commentEntity = commentRepository.findById(commentId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        return commentEntity.getBoardEntity().getBoardId();
+    }
+
+    // 댓글 삭제
+    public void delete(Long commentId){
+        commentRepository.deleteById(commentId);
+    }
 }

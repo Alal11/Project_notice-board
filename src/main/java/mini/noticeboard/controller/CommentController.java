@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mini.noticeboard.dto.CommentDTO;
 import mini.noticeboard.service.CommentService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +22,14 @@ public class CommentController {
         commentDTO.setBoardId(boardId);
         commentService.save(commentDTO);
 
+        return "redirect:/board/" + boardId;
+    }
+
+    // 댓글 삭제
+    @GetMapping("/delete/{commentId}")
+    public String delete(@PathVariable("commentId") Long commentId){
+        Long boardId = commentService.getBoardId(commentId);
+        commentService.delete(commentId);
         return "redirect:/board/" + boardId;
     }
 }

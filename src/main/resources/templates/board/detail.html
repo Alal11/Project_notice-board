@@ -49,6 +49,11 @@
             <td th:text="${comment.commentWriter}"></td>
             <td th:text="${comment.commentContents}"></td>
             <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+
+            <td th:if="${comment.commentWriter == session.loginName}">
+                <a th:href="@{/comment/delete/{id}(id=${comment.commentId})}"
+                   onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
+            </td>
         </tr>
     </table>
 </div>
