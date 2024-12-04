@@ -79,25 +79,24 @@ public class BoardService {
     }
 
     // 게시글 검색 기능
-    public List<BoardDTO> search(String searchType, String keyword){
-        List<BoardEntity> boardEntityList;
+    public Page<BoardDTO> search(String searchType, String keyword, Pageable pageable){
+        Page<BoardEntity> boardEntities;
 
         switch (searchType){
             case "title":
-                boardEntityList = boardRepository.findByBoardTitleContaining(keyword);
+                boardEntities = boardRepository.findByBoardTitleContaining(keyword, pageable);
                 break;
             case "content":
-                boardEntityList = boardRepository.findByBoardContentsContaining(keyword);
+                boardEntities = boardRepository.findByBoardContentsContaining(keyword, pageable);
                 break;
             case "titleContent":
-                boardEntityList = boardRepository.findByBoardTitleContainingOrBoardContentsContaining(keyword, keyword);
+                boardEntities = boardRepository.findByBoardTitleContainingOrBoardContentsContaining(keyword, keyword, pageable);
                 break;
             default:
                 throw new IllegalArgumentException("잘못된 검색 유형입니다.");
         }
 
-        return boardEntityList.stream()
-                .map(entity -> {
+        return boardEntities.map(entity -> {
                     BoardDTO dto = new BoardDTO();
                     dto.setBoardId(entity.getBoardId());
                     dto.setUserName(entity.getUserName());
@@ -108,8 +107,8 @@ public class BoardService {
                     dto.setCreateDate(entity.getCreateDate());
                     dto.setModifiedDate(entity.getModifiedDate());
                     return dto;
-                })
-                .collect(Collectors.toList());
+                });
+
     }
 
 

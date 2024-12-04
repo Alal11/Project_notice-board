@@ -106,11 +106,20 @@ public class BoardController {
     // 키워드 검색
     @GetMapping("/search")
     public String search(@RequestParam("searchType") String searchType,
-                         @RequestParam("keyword") String keyword, Model model) {
-        List<BoardDTO> searchList = boardService.search(searchType, keyword);
+                         @RequestParam("keyword") String keyword,
+                         @PageableDefault(page = 0, size = 5, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable,
+                         Model model) {
+
+        Page<BoardDTO> searchList = boardService.search(searchType, keyword, pageable);
+
         model.addAttribute("boardDTOList", searchList);
         model.addAttribute("searchType", searchType);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("hasNext", searchList.hasNext());
+        model.addAttribute("hasPrev", searchList.hasPrevious());
+
         return "board/boardList";
     }
 

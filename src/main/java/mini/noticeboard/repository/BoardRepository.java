@@ -6,19 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
     // 제목으로 검색
-    List<BoardEntity> findByBoardTitleContaining(String keyword);
+    Page<BoardEntity> findByBoardTitleContaining(String keyword, Pageable pageable);
 
     // 내용으로 검색
-    List<BoardEntity> findByBoardContentsContaining(String keyword);
+    Page<BoardEntity> findByBoardContentsContaining(String keyword, Pageable pageable);
 
     // 제목 또는 내용으로 검색
-    List<BoardEntity> findByBoardTitleContainingOrBoardContentsContaining(String title, String content);
+    Page<BoardEntity> findByBoardTitleContainingOrBoardContentsContaining(String title, String content, Pageable pageable);
 
     // 게시글 내림차순 + 페이징 처리
     Page<BoardEntity> findAllByOrderByBoardIdDesc(Pageable pageable);
