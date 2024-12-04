@@ -6,6 +6,8 @@ import mini.noticeboard.entity.BoardEntity;
 import mini.noticeboard.entity.CommentEntity;
 import mini.noticeboard.repository.BoardRepository;
 import mini.noticeboard.repository.CommentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,18 +31,20 @@ public class CommentService {
         commentRepository.save(commentEntity);
     }
 
-    public List<CommentDTO> findAll(Long boardId){
+    public Page<CommentDTO> findAll(Long boardId, Pageable pageable){
         BoardEntity boardEntity = boardRepository.findById(boardId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
-        List<CommentEntity> commentEntityList = commentRepository.findAllByBoardEntityOrderByCommentIdAsc(boardEntity);
 
-        return commentEntityList.stream()
-                .map(entity -> new CommentDTO(
-                        entity.getCommentId(),
-                        entity.getCommentContents(),
-                        entity.getCommentWriter(),
-                        entity.getCreateDate(),
-                        entity.getBoardEntity().getBoardId()))
-                .collect(Collectors.toList());
+        Page<CommentEntity> commentEntities = commentRepository.findAllByBoardEntityOrderByCommentIdAsc(boardEntity, pageable);
+
+        return commentEntities.map(entity -> {
+            CommentDTO dto = new CommentDTO();
+            dto.setCommentId(entity.getCommentId());
+            dto.setCommentContents(entity.getCommentContents());
+            dto.setCommentWriter(entity.getCommentWriter());
+            dto.setCreateDate(entity.getCreateDate());
+            dto.setBoardId(entity.getBoardEntity().getBoardId());
+            return dto;
+        });
     }
 }

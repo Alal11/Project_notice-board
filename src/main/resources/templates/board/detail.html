@@ -45,12 +45,22 @@
 <!-- 댓글 목록 -->
 <div>
     <table>
-        <tr th:each="comment: ${commentDTOList}">
+        <tr th:each="comment: ${commentDTOList.content}">
             <td th:text="${comment.commentWriter}"></td>
             <td th:text="${comment.commentContents}"></td>
             <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
     </table>
+</div>
+
+<div>
+    <span th:if="${hasPrev}">
+        <a th:href="@{/board/{id}(id=${board.boardId}, page=${previous})}">이전</a>
+    </span>
+
+    <span th:if="${hasNext}">
+        <a th:href="@{/board/{id}(id=${board.boardId}, page=${next})}">다음</a>
+    </span>
 </div>
 
 <a href="/board/">목록으로</a>

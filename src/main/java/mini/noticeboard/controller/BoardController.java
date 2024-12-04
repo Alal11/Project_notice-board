@@ -30,7 +30,7 @@ public class BoardController {
     @GetMapping("/")
     public String getList(Model model,
                           @PageableDefault(page = 0, size = 5, sort = "boardId", direction = Sort.Direction.DESC)
-                          Pageable pageable){
+                          Pageable pageable) {
         // DB에서 전체 게시글 가져와서 list.html에 보여준다.
         Page<BoardDTO> boardDTOList = boardService.getList(pageable);
         model.addAttribute("boardDTOList", boardDTOList);
@@ -61,22 +61,29 @@ public class BoardController {
 
     // 게시글 상세 보기 화면 호출
     @GetMapping("/{id}")
-    public String detail(@PathVariable("id") Long id, Model model){
+    public String detail(@PathVariable("id") Long id,
+                         @PageableDefault(page = 0, size = 5, sort = "commentId", direction = Sort.Direction.ASC) Pageable pageable,
+                         Model model) {
         BoardDTO boardDTO = boardService.findById(id);
 
         // 조회수 증가
         boardService.updateViews(id);
 
         // 댓글 목록 가져오기
-        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        Page<CommentDTO> commentDTOList = commentService.findAll(id, pageable);
         model.addAttribute("board", boardDTO);
         model.addAttribute("commentDTOList", commentDTOList);
+        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("hasNext", commentDTOList.hasNext());
+        model.addAttribute("hasPrev", commentDTOList.hasPrevious());
+
         return "board/detail";
     }
 
     // 게시글 수정 폼 호출
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable("id") Long id, Model model){
+    public String updateForm(@PathVariable("id") Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
         return "board/update";
@@ -84,14 +91,14 @@ public class BoardController {
 
     // 게시글 수정 (DB 저장)
     @PostMapping("/update")
-    public String update(@ModelAttribute BoardDTO boardDTO){
+    public String update(@ModelAttribute BoardDTO boardDTO) {
         boardService.update(boardDTO);
         return "redirect:/board/" + boardDTO.getBoardId();
     }
 
     // 게시글 삭제
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id){
+    public String delete(@PathVariable("id") Long id) {
         boardService.delete(id);
         return "redirect:/board/";
     }
@@ -99,7 +106,7 @@ public class BoardController {
     // 키워드 검색
     @GetMapping("/search")
     public String search(@RequestParam("searchType") String searchType,
-                         @RequestParam("keyword") String keyword, Model model){
+                         @RequestParam("keyword") String keyword, Model model) {
         List<BoardDTO> searchList = boardService.search(searchType, keyword);
         model.addAttribute("boardDTOList", searchList);
         model.addAttribute("searchType", searchType);
