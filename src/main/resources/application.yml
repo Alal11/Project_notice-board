@@ -10,6 +10,13 @@ spring:
     password: 1
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  # 정적 파일 서버 재실행 없이 새로고침으로 반영
+  devtools:
+    livereload:
+      enabled: true
+  freemarker:
+    cache: false
+
   # spring data jpa 설정
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
