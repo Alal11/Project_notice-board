@@ -53,7 +53,7 @@ public class UserController {
             // 로그인 성공
             session.setAttribute("loginName", signinResult.getUserName());
             session.setAttribute("loginId", signinResult.getId());
-            return "main";
+            return "redirect:/main";
         } else {
             // 로그인 실패
             return "user/signin";
