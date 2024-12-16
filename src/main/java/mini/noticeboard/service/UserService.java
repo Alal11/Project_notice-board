@@ -1,6 +1,7 @@
 package mini.noticeboard.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mini.noticeboard.dto.UserDTO;
 import mini.noticeboard.entity.UserEntity;
 import mini.noticeboard.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
@@ -30,6 +32,8 @@ public class UserService {
         return "success";    }
 
     public UserDTO login(UserDTO userDTO) {
+        log.info("로그인 서비스 시작 - 입력된 아이디: {}", userDTO.getUserName());
+
         // 회원이 입력한 아이디로 DB 조회 -> DB의 비번이랑 회원이 입력한 비번이랑 일치하는지 판단
         Optional<UserEntity> byUserName = userRepository.findByUserName(userDTO.getUserName());
 
@@ -38,15 +42,19 @@ public class UserService {
             UserEntity userEntity = byUserName.get();
             if (userEntity.getUserPw().equals(userDTO.getUserPw())) {
                 // 비번 일치
+                log.info("비밀번호 일치 - 로그인 성공");
+
                 // entity -> dto 변환 후 반환
                 UserDTO dto = UserDTO.toUserDTO(userEntity);
                 return dto;
             } else {
                 // 비번 불일치 (로그인 실패)
+                log.info("비밀번호 불일치 - 로그인 실패");
                 return null;
             }
         } else {
             // 조회 결과가 없다 (해당 아이디를 가진 회원이 없다)
+            log.info("사용자를 찾을 수 없음 - 아이디: {}", userDTO.getUserName());
             return null;
         }
     }

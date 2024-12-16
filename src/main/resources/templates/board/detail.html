@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 상세보기</title>
     <link rel="stylesheet" href="/css/detail.css">
+    <link rel="stylesheet" href="/css/star.css">
 </head>
 <body>
+<div class="stars"></div>
 <div class="detail-container">
     <h2 class="title">게시글 상세보기</h2>
 
@@ -69,6 +71,8 @@
         <a href="/board/" class="btn">목록으로</a>
     </div>
 </div>
+
+<script src="/script/star.js"></script>
 
 <script th:inline="javascript">
     const updateBoard = () => {

@@ -15,18 +15,18 @@ body {
 
 .board-container {
     max-width: 1200px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
 /* 사용자 정보 섹션 */
 .user-info {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 15px;
     margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,6 +34,7 @@ body {
 
 .welcome-text {
     font-size: 1.2rem;
+    color: #fff;
 }
 
 .welcome-text span {
@@ -48,11 +49,13 @@ body {
 
 .user-actions a {
     text-decoration: none;
-    color: #fff;
     padding: 0.6rem 1.2rem;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: white;
 }
 
 .update-btn:hover {
@@ -71,6 +74,33 @@ body {
     border-color: #fff;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
+}
+
+.board-actions {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.board-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.board-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
 }
 
 /* 검색 섹션 */
@@ -95,27 +125,46 @@ body {
     color: #fff;
 }
 
+.search-section select option {
+    background: #0a0f2d;
+    color: #fff;
+}
+
 .search-section select {
-    min-width: 120px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
 }
 
 .search-section input[type="text"] {
     width: 300px;
 }
 
-.search-section input[type="submit"] {
-    padding: 0.8rem 2rem;
+.search-section input[type="submit"],
+.board-btn {
+    padding: 0.5rem 1.5rem;
     border-radius: 20px;
-    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.search-section input[type="submit"]:hover {
+.search-section input[type="submit"]:hover,
+.board-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.write-btn {
+    margin: 1rem 0;
+    display: block;
+    margin-left: auto;
 }
 
 /* 테이블 */
@@ -147,6 +196,10 @@ td a {
 
 td a:hover {
     text-shadow: 0 0 10px #80ffdb;
+}
+
+tr:hover {
+    background: rgba(128, 255, 219, 0.05);
 }
 
 /* 페이징 */

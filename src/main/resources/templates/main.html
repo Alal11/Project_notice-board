@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/star.css">
 </head>
 <body>
+<div class="stars"></div>
 <div class="main-container">
     <div class="user-info">
         <div class="welcome-text">
@@ -58,28 +60,27 @@
             </tr>
         </table>
 
-        <div>
+        <div class="pagination">
             <!-- 검색하지 않은 일반 목록일 때의 페이징 -->
             <th:block th:if="${keyword == null}">
-        <span th:if="${hasPrev}">
-            <a th:href="@{/board/(page=${previous})}">이전</a>
-        </span>
+                    <span th:if="${hasPrev}">
+                        <a th:href="@{/board/(page=${previous})}">이전</a>
+                    </span>
                 <span th:if="${hasNext}">
-            <a th:href="@{/board/(page=${next})}">다음</a>
-        </span>
+                        <a th:href="@{/board/(page=${next})}">다음</a>
+                    </span>
             </th:block>
 
             <!-- 검색 결과 목록일 때의 페이징 -->
             <th:block th:if="${keyword != null}">
-        <span th:if="${hasPrev}">
-            <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${previous})}">이전</a>
-        </span>
+                    <span th:if="${hasPrev}">
+                        <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${previous})}">이전</a>
+                    </span>
                 <span th:if="${hasNext}">
-            <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${next})}">다음</a>
-        </span>
+                        <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${next})}">다음</a>
+                    </span>
             </th:block>
         </div>
-
     </div>
 </div>
 
@@ -89,6 +90,8 @@
     }
 
 </script>
+<script src="/script/star.js"></script>
+
 </body>
 </html>
 

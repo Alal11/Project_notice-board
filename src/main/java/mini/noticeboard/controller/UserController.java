@@ -48,14 +48,18 @@ public class UserController {
 
     @PostMapping("/signin")
     public String signin(@ModelAttribute UserDTO userDTO, HttpSession session) {
+        log.info("로그인 시도 - 아이디: {}", userDTO.getUserName());
         UserDTO signinResult = userService.login(userDTO);
         if (signinResult != null) {
             // 로그인 성공
+            log.info("로그인 시도 - 아이디: {}", userDTO.getUserName());
+
             session.setAttribute("loginName", signinResult.getUserName());
             session.setAttribute("loginId", signinResult.getId());
             return "redirect:/main";
         } else {
             // 로그인 실패
+            log.info("로그인 실패 - 아이디: {}", userDTO.getUserName());
             return "user/signin";
         }
     }
@@ -71,7 +75,7 @@ public class UserController {
     @PostMapping("/update")
     public String update(@ModelAttribute UserDTO userDTO) {
         userService.update(userDTO);
-        return "main";
+        return "redirect:/main";
     }
 
     @GetMapping("/delete")
