@@ -2,15 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>update</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정보 수정</title>
+    <link rel="stylesheet" href="/css/update.css">
 </head>
 <body>
 <form action="/user/update" method="post">
-    <input type="hidden" th:value="${updateUser.id}" name="id"><br>
-    아이디: <input type="text" th:value="${updateUser.userName}" name="userName" readonly><br>
-    비밀번호: <input type="text" th:value="${updateUser.userPw}" name="userPw"> <br>
-    이메일: <input type="text" th:value="${updateUser.userEmail}" name="userEmail"><br>
-    <input type="submit" value="정보 수정">
+    <h2 class="title">정보 수정</h2>
+    <input type="hidden" th:value="${updateUser.id}" name="id">
+
+    <div class="form-group">
+        <label for="userName">아이디</label>
+        <input type="text" id="userName" th:value="${updateUser.userName}" name="userName" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="userPw">비밀번호</label>
+        <input type="password" id="userPw" th:value="${updateUser.userPw}" name="userPw">
+    </div>
+
+    <div class="form-group">
+        <label for="userEmail">이메일</label>
+        <input type="email" id="userEmail" th:value="${updateUser.userEmail}" name="userEmail">
+    </div>
+
+    <button type="submit" class="submit-btn">정보 수정</button>
 </form>
 </body>
 </html>

@@ -2,74 +2,73 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 상세보기</title>
+    <link rel="stylesheet" href="/css/detail.css">
 </head>
 <body>
-<h2>게시글 상세보기</h2>
-<table>
-    <tr>
-        <th>제목</th>
-        <td th:text="${board.boardTitle}"></td>
-    </tr>
-    <tr>
-        <th>작성자</th>
-        <td th:text="${board.userName}"></td>
-    </tr>
-    <tr>
-        <th>내용</th>
-        <td th:text="${board.boardContents}"></td>
-    </tr>
-    <tr>
-        <th>작성시간</th>
-        <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-    </tr>
-    <tr>
-        <th>조회수</th>
-        <td th:text="${board.boardViews}"></td>
-    </tr>
-</table>
+<div class="detail-container">
+    <h2 class="title">게시글 상세보기</h2>
 
-<div th:if="${board.userName == session.loginName}">
-    <button onclick="updateBoard()">수정</button>
-    <button onclick="deleteBoard()">삭제</button>
+    <div class="post-container">
+        <div class="post-header">
+            <h3 class="post-title" th:text="${board.boardTitle}"></h3>
+            <div class="post-info">
+                <div>
+                    <span>작성자: </span>
+                    <span th:text="${board.userName}"></span>
+                    <span> | 조회수: </span>
+                    <span th:text="${board.boardViews}"></span>
+                </div>
+                <div>
+                    <span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-content" th:text="${board.boardContents}"></div>
+
+        <div class="action-buttons" th:if="${board.userName == session.loginName}">
+            <button onclick="updateBoard()" class="btn update-btn">수정</button>
+            <button onclick="deleteBoard()" class="btn delete-btn">삭제</button>
+        </div>
+    </div>
+
+    <div class="comment-section">
+        <div class="comment-form">
+            <form th:action="@{|/comment/save/${board.boardId}|}" method="post" style="width: 100%;">
+                <input type="text" name="commentContents" class="comment-input" placeholder="댓글을 입력하세요" required>
+                <button type="submit" class="btn">댓글작성</button>
+            </form>
+        </div>
+
+        <table class="comment-table">
+            <tr th:each="comment: ${commentDTOList.content}">
+                <td class="comment-writer" th:text="${comment.commentWriter}"></td>
+                <td th:text="${comment.commentContents}"></td>
+                <td class="comment-date" th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:if="${comment.commentWriter == session.loginName}">
+                    <a th:href="@{/comment/delete/{id}(id=${comment.commentId})}"
+                       onclick="return confirm('정말로 삭제하시겠습니까?')"
+                       class="comment-delete">삭제</a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="pagination">
+                <span th:if="${hasPrev}">
+                    <a th:href="@{/board/{id}(id=${board.boardId}, page=${previous})}">이전</a>
+                </span>
+            <span th:if="${hasNext}">
+                    <a th:href="@{/board/{id}(id=${board.boardId}, page=${next})}">다음</a>
+                </span>
+        </div>
+    </div>
+
+    <div class="action-buttons" style="justify-content: center;">
+        <a href="/board/" class="btn">목록으로</a>
+    </div>
 </div>
-
-<!-- 댓글 작성 -->
-<div>
-    <form th:action="@{|/comment/save/${board.boardId}|}" method="post">
-        <input type="text" name="commentContents" placeholder="댓글 내용" required>
-        <input type="submit" value="댓글작성">
-    </form>
-</div>
-
-<!-- 댓글 목록 -->
-<div>
-    <table>
-        <tr th:each="comment: ${commentDTOList.content}">
-            <td th:text="${comment.commentWriter}"></td>
-            <td th:text="${comment.commentContents}"></td>
-            <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-
-            <td th:if="${comment.commentWriter == session.loginName}">
-                <a th:href="@{/comment/delete/{id}(id=${comment.commentId})}"
-                   onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<div>
-    <span th:if="${hasPrev}">
-        <a th:href="@{/board/{id}(id=${board.boardId}, page=${previous})}">이전</a>
-    </span>
-
-    <span th:if="${hasNext}">
-        <a th:href="@{/board/{id}(id=${board.boardId}, page=${next})}">다음</a>
-    </span>
-</div>
-
-<a href="/board/">목록으로</a>
-</body>
 
 <script th:inline="javascript">
     const updateBoard = () => {
@@ -84,6 +83,5 @@
         }
     }
 </script>
-
-
+</body>
 </html>

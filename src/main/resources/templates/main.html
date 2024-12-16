@@ -2,36 +2,94 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>main</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    session 값 확인: <p th:text="${session.loginName}"></p><br><br>
+<div class="main-container">
+    <div class="user-info">
+        <div class="welcome-text">
+            환영합니다, <span th:text="${session.loginName}">사용자</span>님!
+        </div>
 
-    <a href="/user/update">내 정보 수정</a>
+        <div class="user-actions">
+            <a href="/user/update" class="update-btn">내 정보 수정</a>
+            <a href="/user/delete" class="delete-btn">회원 탈퇴</a>
+            <a href="/user/signout" class="logout-btn">로그아웃</a>
+        </div>
+    </div>
 
-    <a href="/user/delete">회원 탈퇴</a>
+    <div class="board-actions">
+        <h2 class="board-title">게시판</h2>
 
-    <a href="/user/signout">로그아웃</a>
+        <div class="search-section">
+            <form action="/board/search" method="get">
+                <select name="searchType">
+                    <option value="title" th:selected="${searchType == 'title'}">제목</option>
+                    <option value="content" th:selected="${searchType == 'content'}">내용</option>
+                    <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목+내용</option>
+                </select>
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
+                <input type="submit" value="검색">
+            </form>
+        </div>
 
-    <p th:text="${session.loginId}">세션 ID가 여기 표시됩니다.</p>
+        <button onclick="saveReq()" class="board-btn write-btn">글 작성</button>
 
-    <br><br>
+        <table>
+            <tr>
+                <th>번호</th>
+                <th>작성자</th>
+                <th>제목</th>
+                <th>조회수</th>
+                <th>댓글수</th>
+                <th>작성일</th>
+            </tr>
+            <tr th:each="board: ${boardDTOList.content}">
+                <td th:text="${board.boardId}"></td>
+                <td th:text="${board.userName}"></td>
+                <td>
+                    <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></a>
+                </td>
+                <td th:text="${board.boardViews}"></td>
+                <td th:text="${board.commentCount}"></td>
+                <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+        </table>
 
-    <button onclick="saveReq()">글 작성</button>
+        <div>
+            <!-- 검색하지 않은 일반 목록일 때의 페이징 -->
+            <th:block th:if="${keyword == null}">
+        <span th:if="${hasPrev}">
+            <a th:href="@{/board/(page=${previous})}">이전</a>
+        </span>
+                <span th:if="${hasNext}">
+            <a th:href="@{/board/(page=${next})}">다음</a>
+        </span>
+            </th:block>
 
-    <button onclick="listReq()">글 목록</button>
+            <!-- 검색 결과 목록일 때의 페이징 -->
+            <th:block th:if="${keyword != null}">
+        <span th:if="${hasPrev}">
+            <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${previous})}">이전</a>
+        </span>
+                <span th:if="${hasNext}">
+            <a th:href="@{/board/search(searchType=${searchType}, keyword=${keyword}, page=${next})}">다음</a>
+        </span>
+            </th:block>
+        </div>
 
-
-
-</body>
+    </div>
+</div>
 
 <script>
-    const saveReq = () =>{
+    const saveReq = () => {
         location.href = "/board/writeForm";
     }
 
-    const listReq = () =>{
-        location.href = "/board/";
-    }
 </script>
+</body>
 </html>
+
+

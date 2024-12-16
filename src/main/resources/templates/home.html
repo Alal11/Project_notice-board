@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-<h2>스프링부트로 만든 간단한 게시판!</h2>
-<a href="/user/signup">회원가입</a>
-<a href="/user/signin">로그인</a>
+<div class="stars"></div>
+<div class="home">
+    <h2 class="title">밤하늘 은하수 게시판</h2>
+    <div>
+        <a href="/user/signup" class="btn btn-blue">회원가입</a>
+        <a href="/user/signin" class="btn btn-green">로그인</a>
+    </div>
+</div>
+<script src="/script/home.js"></script>
 </body>
 </html>

@@ -2,14 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>write</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 작성</title>
+    <link rel="stylesheet" href="/css/writeForm.css">
 </head>
 <body>
+<div class="write-container">
+    <h2 class="title">글 작성</h2>
 
-<form action="/board/writeForm" method="post">
-    title: <input type="text" name="boardTitle" required> <br>
-    contents: <textarea name="boardContents" cols="30" rows="10" required></textarea> <br><br>
-    <input type="submit" value="작성하기">
-</form>
+    <form action="/board/writeForm" method="post">
+        <div class="form-group">
+            <label for="boardTitle">제목</label>
+            <input type="text" id="boardTitle" name="boardTitle" required>
+        </div>
+
+        <div class="form-group">
+            <label for="boardContents">내용</label>
+            <textarea id="boardContents" name="boardContents" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">작성하기</button>
+    </form>
+</div>
 </body>
 </html>
