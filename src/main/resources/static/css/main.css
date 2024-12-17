@@ -180,6 +180,16 @@ th {
     color: #fff;
 }
 
+th:nth-child(2), td:nth-child(2) {
+    width: 40%; /* 원하는 비율로 너비를 설정 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    padding-left: 1rem; /* 패딩 추가로 여백 설정 */
+}
+
+th:nth-child(2){
+    text-align: center;
+}
+
 td {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -199,6 +209,8 @@ td a:hover {
 
 tr:hover {
     background: rgba(128, 255, 219, 0.05);
+    transition: background 0.3s ease;
+    cursor: pointer;
 }
 
 /* 페이징 스타일 */

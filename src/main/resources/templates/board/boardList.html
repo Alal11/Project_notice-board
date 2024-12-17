@@ -42,18 +42,20 @@
         <table>
             <tr>
                 <th>번호</th>
-                <th>작성자</th>
                 <th>제목</th>
+                <th>작성자</th>
                 <th>조회수</th>
                 <th>댓글수</th>
                 <th>작성일</th>
             </tr>
-            <tr th:each="board: ${boardDTOList.content}">
+            <tr th:each="board: ${boardDTOList.content}"
+                th:onclick="'location.href=\'/board/\' + ' + ${board.boardId}"
+                style="cursor: pointer;">
                 <td th:text="${board.boardId}"></td>
-                <td th:text="${board.userName}"></td>
                 <td>
-                    <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></a>
+                    <span th:text="${board.boardTitle}"></span>
                 </td>
+                <td th:text="${board.userName}"></td>
                 <td th:text="${board.boardViews}"></td>
                 <td th:text="${board.commentCount}"></td>
                 <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
